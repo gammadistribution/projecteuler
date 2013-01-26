@@ -115,11 +115,14 @@ def gcd_multiple(factors, straw=None):
 
     stack = factors.pop()
 
+    if not straw:
+        straw = stack
+    
     if not factors:
         return gcd(stack, straw)
 
     else:
-        return gcd_multiple(factors, gcd(stack, straw))
+        return gcd_multiple(factors, straw=gcd(stack, straw))
 
 
 def lcm(a, b):
@@ -134,7 +137,7 @@ def lcm(a, b):
     return abs(a * b) / gcd(a, b)
 
 
-def lcm_multiple(factors, straw=1):
+def lcm_multiple(factors, straw=None):
     """
     The variable factors is a list of positive integers. 
 
@@ -145,11 +148,14 @@ def lcm_multiple(factors, straw=1):
 
     stack = factors.pop()
 
+    if not straw:
+        straw = 1
+
     if not factors:
         return lcm(stack, straw)
 
     else:
-        return lcm_multiple(factors, lcm(stack, straw))
+        return lcm_multiple(factors, straw=lcm(stack, straw))
 
 
 def palindrome(n):

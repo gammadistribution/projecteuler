@@ -2,7 +2,7 @@ This is a repository chronicling my work on problems from projecteuler.net
 using Python.  
 
 The folder problems contains each individual problem from project euler 
-appropriately name.
+appropriately named.
 
-Likewise modules contains useful modules that I wrote for solving these 
+Likewise, modules contains useful modules that I wrote for solving these 
 problems. 
