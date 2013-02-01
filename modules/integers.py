@@ -247,3 +247,28 @@ def prime_factors(n):
     would return [(2, 2), (3, 1)] and prime_factors(n) would return [2, 3].
     """
     return [prime for prime, power in factor(n)]
+
+
+def triangle_number(n):
+    """
+    The variable n is a semi-positive integer which represents the n-th item
+    of the triangle number sequence.
+ 
+    The triangle number sequence maps all natural numbers n to the sum of all
+    natural numbers less than or equal to n.
+ 
+    The function returns the n-th number of the the triangle number sequence,
+    i.e.the sum of all natural numbers less than or equal to n.
+    For example, triangle_number(7) finds the sum 1 + 2 + 3 + 4 + 5 + 6 + 7
+    which would then return the total, 28.
+    """
+   
+    assert n == int(n), "Input is not an integer."
+    assert n >= 0, "Input is not a semi-positive integer."
+       
+    if n > 0:
+        return n + triangle_number(n - 1)
+        n -= 1
+   
+    else:
+        return 0
