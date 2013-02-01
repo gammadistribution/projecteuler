@@ -26,7 +26,10 @@ def factor(n):
     """
 
     assert n == int(n), "Input is not an integer."
-    assert n > 1, "Input is not greater than 1."
+    assert n > 0, "Input is not greater than 1."
+
+    if n == 1:
+        return [1]
 
     original = n
     integer = 2
