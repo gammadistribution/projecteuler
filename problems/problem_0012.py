@@ -37,7 +37,7 @@ def T(n):
     """
     The variable n is a positive triangular number.  
 
-    The function returns the sum of the first n triangular numbers using 
+    The function returns the sum of the first n natural numbers using 
     Gauss's famous formula.
     """
 
