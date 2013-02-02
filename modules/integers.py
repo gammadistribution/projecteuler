@@ -10,6 +10,23 @@ related to the ring of integers.
 import math
 
 
+def divisor_function(n):
+    """
+    The variable n is a positive integer.
+
+    The function returns the total number of divisors the integer has by finding
+    its prime factorization and using the multiplicity of the function to find 
+    the sum of the powers of each prime factor.
+    """
+
+    number = 1 
+
+    for base, power in factor(n):
+        number *= power + 1
+
+    return number
+
+
 def factor(n):
     """
     The variable n is a positive integer.
@@ -26,10 +43,10 @@ def factor(n):
     """
 
     assert n == int(n), "Input is not an integer."
-    assert n > 0, "Input is not greater than 1."
+    assert n > 0, "Input is not a positive integer."
 
     if n == 1:
-        return [1]
+        return [(1, 0)]
 
     original = n
     integer = 2
@@ -41,7 +58,7 @@ def factor(n):
             power += 1
             original /= integer
         
-        if n % integer == 0:
+        if n % integer == 0 and power != 0:
             factors.append((integer, power))
 
         integer += 1
