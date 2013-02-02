@@ -30,21 +30,33 @@ import sys
 sys.path.append(os.path.join(os.path.split(os.getcwd())[0], 'modules'))
 
 import integers
+import time
+
+
+def T(n):
+    """
+    The variable n is a positive triangular number.  
+
+    The function returns the sum of the first n triangular numbers using 
+    Gauss's famous formula.
+    """
+
+    return (n * (n +1)) / 2
 
 
 def main():
+    LIMIT = 500
 
-    number = 1
-    counter = 1
+    i = 1 
+    number = 1 
+    divisors = 1
 
-    while len(integers.factor(number)) <= 500:
-        number = integers.triangle_number(counter)
-        counter += 1
+    while divisors <= LIMIT:
+        number = T(i)
+        divisors = integers.divisor_function(number)
+        i += 1
 
-    answer = number
-
-    print number
-
+    print "answer", number
 
 if __name__ == "__main__":
     main()
