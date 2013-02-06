@@ -15,7 +15,7 @@ four million, find the sum of the even-valued terms.
 
 import os
 import sys
-sys.path.append(os.path.join(os.path.split(os.getcwd())[0], 'modules'))
+sys.path.append(os.path.join(os.path.pardir, 'modules'))
 
 import integers
 
