@@ -12,7 +12,7 @@ Find the sum of all the primes below two million.
 
 import os
 import sys
-sys.path.append(os.path.join(os.path.split(os.getcwd())[0], 'modules'))
+sys.path.append(os.path.join(os.pardir, 'modules'))
 
 import integers
 

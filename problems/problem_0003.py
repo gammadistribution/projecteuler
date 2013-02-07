@@ -12,7 +12,7 @@ What is the largest prime factor of the number 600851475143?
 
 import os
 import sys
-sys.path.append(os.path.join(os.path.pardir, 'modules'))
+sys.path.append(os.path.join(os.pardir, 'modules'))
 
 import integers
 

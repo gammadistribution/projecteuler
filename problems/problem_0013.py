@@ -108,7 +108,7 @@ Work out the first ten digits of the sum of the following one-hundred 50-digit n
 
 import os
 import sys
-sys.path.append(os.path.join(os.path.split(os.getcwd())[0], 'modules'))
+sys.path.append(os.path.join(os.pardir, 'modules'))
 
 import integers
 
