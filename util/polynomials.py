@@ -1,15 +1,6 @@
-#!/usr/bin/python
-
-"""
-The following is a utility designed to be used to perform ring operations
-on the set of polynomials with coefficients from a field.
-"""
-
-
 class Polynomial():
     def __init__(self, coefficients, var="x"):
-        """
-        The variable coefficients is a list of elements from a field and the
+        """The variable coefficients is a list of elements from a field and the
         var variable represents the variable of the polynomial.
 
         Note that it is assumed that the coefficient's position in the list
@@ -43,7 +34,7 @@ class Polynomial():
     def __mul__(self, other):
         degree = len(self.coefficients) + len(other.coefficients)
         multiplication = [0 for x in range(degree)]
-        
+
         for i, x in enumerate(self.coefficients):
             for j, y in enumerate(other.coefficients):
                 multiplication[i + j] += x * y
@@ -59,31 +50,30 @@ class Polynomial():
     def __call__(self, value):
         return sum([coefficient * (value ** i) for i, coefficient
                     in enumerate(self.coefficients)])
-            
+
     def __repr__(self):
         return str(self.coefficients)
 
     def __str__(self):
-        strings = ["{}{}^{}".format(coefficient, self.var, i)
+        strings = ["{0}{1}^{2}".format(coefficient, self.var, i)
                    for i, coefficient in enumerate(self.coefficients)]
         return " + ".join(strings)
 
     def scalar(self, element):
         """
         Performs scalar multiplication on polynomial by the variable element.
-        
+
         Alters self.coefficients of the Polynomial instance by
         multiplying each entry of self.coefficients by element.
         """
         self.coefficients = [c * element for c in self.coefficients]
 
     def _simplify(self, coefficients):
-        """ 
-        The variable coefficients is a list of coefficients from a field.
+        """The variable coefficients is a list of coefficients from a field.
 
-        This function removes the extraneous zeroes at the end of the list coefficients.
-        We do this so that we can compare [1,2,0] and [1,2], two equivalent polynomial
-        representations, by just inspecting the lists.
+        This function removes the extraneous zeroes at the end of the list
+        coefficients. We do this so that we can compare [1,2,0] and [1,2], two
+        equivalent polynomial representations, by just inspecting the lists.
         """
 
         while coefficients[-1] == 0:

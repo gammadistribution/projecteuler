@@ -1,21 +1,12 @@
-#!/usr/bin/python
-
-
 """
 Problem 4
 
-A palindromic number reads the same both ways. The largest palindrome made 
+A palindromic number reads the same both ways. The largest palindrome made
 from the product of two 2-digit numbers is 9009 = 91 × 99.
 
 Find the largest palindrome made from the product of two 3-digit numbers.
 """
-
-
-import os
-import sys
-sys.path.append(os.path.join(os.pardir, 'modules'))
-
-import integers
+from util import integers
 
 
 def main():
@@ -29,11 +20,7 @@ def main():
         for y in range(LOWER_BOUND, x):
             if integers.palindrome(x * y) and x * y > largest:
                 largest = x * y
-            
+
     answer = largest
 
-    print answer
-            
-
-if __name__ == "__main__":
-    main()
+    return answer

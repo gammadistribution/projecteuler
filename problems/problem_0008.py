@@ -1,7 +1,4 @@
-#!/usr/bin/python
-
-"""
-Problem 8
+"""Problem 8
 
 Find the greatest product of five consecutive digits in the 1000-digit number.
 
@@ -26,9 +23,7 @@ Find the greatest product of five consecutive digits in the 1000-digit number.
 05886116467109405077541002256983155200055935729725
 71636269561882670428252483600823257530420752963450
 """
-
-
-import os 
+import os
 import re
 
 
@@ -36,20 +31,29 @@ class NotStripped(Exception):
     pass
 
 
-def product(integers):
+def get_path_variables():
+    """Return the module's parent_directory and module name stripped of
+    extension.
     """
-    The variable integers is a list of integers.
+    parent_directory = os.path.dirname(os.path.realpath(__file__))
+    directory, filename = os.path.split(__file__)
+    base, extension = os.path.splitext(filename)
 
-    This function finds the product of every integer contained in integers 
-    and returns the product.  Function returns 0 if there is a 0 present in 
+    return parent_directory, base
+
+
+def product(integers):
+    """The variable integers is a list of integers.
+
+    This function finds the product of every integer contained in integers
+    and returns the product.  Function returns 0 if there is a 0 present in
     list without computing the product.
     """
-    
     if 0 in integers:
         return 0
 
     product = integers.pop()
-    
+
     for integer in integers:
         product *= integer
 
@@ -57,25 +61,24 @@ def product(integers):
 
 
 def product_finder(string, con_digits):
-    """
-    The variable string is a string representing an integer.  The variable 
+    """The variable string is a string representing an integer.  The variable
     con_digits is the number of consecutive digits to search for the product.
 
     This function finds the largest product of con_digits consecutive digits
     and returns the maximal product.
     """
 
-    if re.search(" ", string) or re.search("\n", string): 
-        msg = "Input contains spaces or new line characters.  Exiting"  
+    if re.search(" ", string) or re.search("\n", string):
+        msg = "Input contains spaces or new line characters.  Exiting"
         raise NotStripped(msg)
-    
+
     length = len(string)
     products = []
 
     for i, integer in enumerate(string):
-        
+
         gap = i + con_digits
-        
+
         if gap <= length:
             integers = string[i: gap]
             integers = [int(s) for s in integers]
@@ -85,19 +88,17 @@ def product_finder(string, con_digits):
 
 
 def main():
-    path = os.path.join(os.getcwd(), 'input', 'problem_8', 'number.txt')
-    
+    parent_directory, base = get_path_variables()
+
+    path = os.path.join(parent_directory, 'input', base, 'number.txt')
+
     with open(path) as f:
         lines = f.readlines()
         string = "".join([s.replace(" ", "").replace("\n", "") for s in lines])
-        
-    try:        
+
+    try:
         answer = product_finder(string, 5)
-        print answer
+    except NotStripped:
+        answer = None
 
-    except NotStripped, e:
-        print e
-    
-
-if __name__ == "__main__":
-    main()
+    return answer

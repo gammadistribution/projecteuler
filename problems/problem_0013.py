@@ -1,8 +1,7 @@
-#!/usr/bin/python
+"""Problem 13
 
-
-"""
-Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.
+Work out the first ten digits of the sum of the following one-hundred
+50-digit numbers.
 
 37107287533902102798797998220837590246510135740250
 46376937677490009712648124896970078050417018260538
@@ -105,28 +104,30 @@ Work out the first ten digits of the sum of the following one-hundred 50-digit n
 20849603980134001723930671666823555245252804609722
 53503534226472524250874054075591789781264330331690
 """
-
 import os
-import sys
-sys.path.append(os.path.join(os.pardir, 'modules'))
 
-import integers
+
+def get_path_variables():
+    """Return the module's parent_directory and module name stripped of
+    extension.
+    """
+    parent_directory = os.path.dirname(os.path.realpath(__file__))
+    directory, filename = os.path.split(__file__)
+    base, extension = os.path.splitext(filename)
+
+    return parent_directory, base
 
 
 def main():
+    parent_directory, base = get_path_variables()
 
-    input_file = os.path.join(os.getcwd(), 'input', 'problem_0013', 
-                              'numbers.txt')
+    path = os.path.join(parent_directory, 'input', base, 'numbers.txt')
 
-    with open(input_file) as f:
+    with open(path) as f:
         numbers = [int(line.rstrip()) for line in f.readlines()]
 
     total = str(sum(numbers))
 
     answer = total[:10]
 
-    print "answer", answer 
-
-
-if __name__ == "__main__":
-    main()
+    return answer

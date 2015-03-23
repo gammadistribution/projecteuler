@@ -1,20 +1,10 @@
-#!/usr/bin/python
-
-
-"""
-Problem 10
+"""Problem 10
 
 The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
 
 Find the sum of all the primes below two million.
 """
-
-
-import os
-import sys
-sys.path.append(os.path.join(os.pardir, 'modules'))
-
-import integers
+from util import integers
 
 
 def main():
@@ -22,8 +12,4 @@ def main():
 
     answer = sum([n for n in range(2, UPPER_BOUND) if integers.primality(n)])
 
-    print answer
-
-
-if __name__ == "__main__":
-    main()
+    return answer
