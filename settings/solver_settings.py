@@ -1,5 +1,11 @@
 import os
 
+# Directory of this file and parent directory of directory.
+SETTINGS_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+PARENT_DIRECTORY = os.path.dirname(SETTINGS_DIRECTORY)
+
+# Maximum number of problems on project euler.
+UPPERBOUND = 498
 
 # This is the package where all problems are stored.
 PROBLEMS_PACKAGE = 'problems'
@@ -9,11 +15,12 @@ PROBLEMS_PACKAGE = 'problems'
 PROBLEMS_MODULE_TEMPLATE = 'problem_{0:04}'
 
 # Template for Python path to an individual problem
-PROBLEM_PATH_TEMPLATE = '.'.join([PROBLEMS_PACKAGE, PROBLEMS_MODULE_TEMPLATE])
+PROBLEMS_PATH_TEMPLATE = '.'.join([PROBLEMS_PACKAGE, PROBLEMS_MODULE_TEMPLATE])
 
-# Maximum number of problems on project euler.
-UPPERBOUND = 498
+# Glob pattern for all problem modules
+
+PROBLEMS_MODULE_GLOB_PATTERN = os.path.join(PARENT_DIRECTORY, PROBLEMS_PACKAGE,
+                                            'problem_*')
 
 # Path to logging ini file.
-LOGGING_CONF_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                 'logging', 'logging.ini')
+LOGGING_CONF_FILE = os.path.join(SETTINGS_DIRECTORY, 'logging', 'logging.ini')
