@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 import importlib
+from settings import solver_settings
 
 
 def execute_problem(problem):
@@ -14,7 +15,6 @@ def execute_problem(problem):
     except AttributeError:
         print('{0} has no main method.'.format(problem))
     except ImportError:
-        print(problem)
         print('{0} cannot be found.'.format(problem))
 
 
@@ -22,25 +22,45 @@ def get_args():
     """Returns parsed args passed to program. Provides description of program
     and parses any arguments passed.
     """
-    UPPERBOUND = 498
     description = 'Execute program corresponding to passed problem.'
     parser = ArgumentParser(description=description)
 
     problem_help = 'Problem(s) to execute. Must be between 1 and '
     problem_help += '{bound}.'
-    parser.add_argument('problems', type=int, nargs='+',
-                        help=problem_help.format(**{'bound': UPPERBOUND}))
+    problem_help = problem_help.format(**{'bound': solver_settings.UPPERBOUND})
+    parser.add_argument('problems', type=int, nargs='+', help=problem_help)
 
     args = parser.parse_args()
 
-    args.problems = ['problems.problem_{0:04}'.format(problem) for
-                     problem in args.problems]
+    args.problem_modules = get_modules(args)
 
     return args
+
+
+def get_modules(args):
+    """Return list of modules of problems to solve. Check to see if each
+    problem passed in args is a number between 1 and
+    solver_settings.UPPERBOUND. If it is not, then log message saying as such.
+    """
+    modules = []
+
+    for problem in args.problems:
+        if 1 <= problem <= solver_settings.UPPERBOUND:
+            path = solver_settings.PROBLEM_PATH_TEMPLATE.format(problem)
+            modules.append(path)
+        else:
+            message = 'Problem(s) must be between 1 and {bound}.'
+            print(message.format(**{'bound': solver_settings.UPPERBOUND}))
+
+    return modules
+
+
+def main(args):
+    for problem in args.problem_modules:
+        execute_problem(problem)
 
 
 if __name__ == '__main__':
     args = get_args()
 
-    for problem in args.problems:
-        execute_problem(problem)
+    main(args)
