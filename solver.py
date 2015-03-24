@@ -1,6 +1,12 @@
+from settings import solver_settings
 from argparse import ArgumentParser
 import importlib
-from settings import solver_settings
+import logging
+import logging.config
+
+
+logger = logging.config.fileConfig(solver_settings.LOGGING_CONF_FILE)
+logger = logging.getLogger('solver')
 
 
 def execute_problem(problem):
@@ -11,11 +17,11 @@ def execute_problem(problem):
     try:
         namespace = importlib.import_module(problem)
         answer = namespace.main()
-        print('{0} answer: {1}'.format(problem, answer))
+        logger.info('{0} answer: {1}'.format(problem, answer))
     except AttributeError:
-        print('{0} has no main method.'.format(problem))
+        logger.critical('{0} has no main method.'.format(problem))
     except ImportError:
-        print('{0} cannot be found.'.format(problem))
+        logger.critical('{0} cannot be found.'.format(problem))
 
 
 def get_args():
@@ -49,8 +55,11 @@ def get_modules(args):
             path = solver_settings.PROBLEM_PATH_TEMPLATE.format(problem)
             modules.append(path)
         else:
-            message = 'Problem(s) must be between 1 and {bound}.'
-            print(message.format(**{'bound': solver_settings.UPPERBOUND}))
+            message = 'Problem(s) must be between 1 and {bound}. Skipping '
+            message += 'problem {problem}.'
+            kwargs = {'bound': solver_settings.UPPERBOUND,
+                      'problem': problem}
+            logger.warning(message.format(**kwargs))
 
     return modules
 

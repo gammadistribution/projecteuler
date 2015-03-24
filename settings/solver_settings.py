@@ -1,3 +1,6 @@
+import os
+
+
 # This is the package where all problems are stored.
 PROBLEMS_PACKAGE = 'problems'
 
@@ -10,3 +13,7 @@ PROBLEM_PATH_TEMPLATE = '.'.join([PROBLEMS_PACKAGE, PROBLEMS_MODULE_TEMPLATE])
 
 # Maximum number of problems on project euler.
 UPPERBOUND = 498
+
+# Path to logging ini file.
+LOGGING_CONF_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                 'logging', 'logging.ini')
