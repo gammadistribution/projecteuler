@@ -5,7 +5,7 @@ that the 6th prime is 13.
 
 What is the 10001st prime number?
 """
-from util import integers
+from util.mathematics import integers
 
 
 def main():
