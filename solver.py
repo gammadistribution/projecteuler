@@ -7,7 +7,7 @@ import logging.config
 import os
 
 
-logger = logging.config.fileConfig(solver_settings.LOGGING_CONF_FILE)
+logging.config.fileConfig(solver_settings.LOGGING_CONF_FILE)
 logger = logging.getLogger('solver')
 
 
@@ -18,12 +18,17 @@ def execute_problem(problem):
     """
     try:
         namespace = importlib.import_module(problem)
-        answer = namespace.main()
-        logger.info('{0} answer: {1}'.format(problem, answer))
-    except AttributeError:
-        logger.critical('{0} has no main method.'.format(problem))
     except ImportError:
         logger.critical('{0} cannot be found.'.format(problem))
+        return None
+
+    try:
+        answer = namespace.main()
+    except AttributeError:
+        logger.critical('{0} has no main method.'.format(problem))
+        return None
+
+    return answer
 
 
 def get_args():
@@ -44,12 +49,13 @@ def get_args():
 
     args = parser.parse_args()
 
-    args.problem_modules = get_modules(args)
+    args.problem_modules = get_modules(args.problems,
+                                       **solver_settings.GET_MODULES_SETTINGS)
 
     return args
 
 
-def get_modules(args):
+def get_modules(problems, package, module_template, glob_pattern, upper_bound):
     """Return list of modules of problems to solve. From passed args, if
     args.problems exists, i.e. subset of problems have been chosen, then
     get module names for those problems. Otherwise get module names for
@@ -57,23 +63,24 @@ def get_modules(args):
     """
     modules = []
 
-    if args.problems:
-        for problem in args.problems:
-            if 1 <= problem <= solver_settings.UPPERBOUND:
-                path = solver_settings.PROBLEMS_PATH_TEMPLATE.format(problem)
+    if problems:
+        for problem in problems:
+            if 1 <= problem <= upper_bound:
+                path = '.'.join([package, module_template]).format(problem)
                 modules.append(path)
             else:
                 message = 'Problem(s) must be between 1 and {bound}. Skipping '
                 message += 'problem {problem}.'
-                kwargs = {'bound': solver_settings.UPPERBOUND,
+                kwargs = {'bound': upper_bound,
                           'problem': problem}
                 logger.warning(message.format(**kwargs))
+
     else:
-        files = glob.glob(solver_settings.PROBLEMS_MODULE_GLOB_PATTERN)
+        files = glob.glob(glob_pattern)
         for path in files:
             directory, filename = os.path.split(path)
             base, ext = os.path.splitext(filename)
-            modules.append('.'.join([solver_settings.PROBLEMS_PACKAGE, base]))
+            modules.append('.'.join([package, base]))
 
         modules.sort()
 
@@ -82,7 +89,11 @@ def get_modules(args):
 
 def main(args):
     for problem in args.problem_modules:
-        execute_problem(problem)
+        logger.info('Starting {0}'.format(problem))
+
+        answer = execute_problem(problem)
+
+        logger.info('{0} answer: {1}'.format(problem, answer))
 
 
 if __name__ == '__main__':

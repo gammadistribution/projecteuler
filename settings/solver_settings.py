@@ -24,3 +24,10 @@ PROBLEMS_MODULE_GLOB_PATTERN = os.path.join(PARENT_DIRECTORY, PROBLEMS_PACKAGE,
 
 # Path to logging ini file.
 LOGGING_CONF_FILE = os.path.join(SETTINGS_DIRECTORY, 'logging', 'logging.ini')
+
+GET_MODULES_SETTINGS = {
+    'package': PROBLEMS_PACKAGE,
+    'module_template': PROBLEMS_MODULE_TEMPLATE,
+    'glob_pattern': PROBLEMS_MODULE_GLOB_PATTERN,
+    'upper_bound': UPPERBOUND
+}
