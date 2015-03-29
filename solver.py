@@ -18,15 +18,15 @@ def execute_problem(problem):
     """
     try:
         namespace = importlib.import_module(problem)
-    except ImportError:
-        logger.critical('{0} cannot be found.'.format(problem))
-        return None
-
-    try:
         answer = namespace.main()
+    except ImportError:
+        message = '{0} cannot be found.'
+        logger.critical(message.format(problem))
+        answer = None
     except AttributeError:
-        logger.critical('{0} has no main method.'.format(problem))
-        return None
+        message = '{0} has no main method.'
+        logger.critical(message.format(problem))
+        answer = None
 
     return answer
 
@@ -93,7 +93,8 @@ def main(args):
 
         answer = execute_problem(problem)
 
-        logger.info('{0} answer: {1}'.format(problem, answer))
+        if answer:
+            logger.info('{0} answer: {1}'.format(problem, answer))
 
 
 if __name__ == '__main__':

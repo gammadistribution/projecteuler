@@ -9,7 +9,42 @@ import unittest
 logging.disable(logging.CRITICAL)
 
 
+class TestExecuteProblem(unittest.TestCase):
+    """Make sure that solver.execute_problem works for
+    """
+    def setUp(self):
+        self.module_name = 'solver'
+        self.module_with_main = 'problems.problem_0001'
+        self.module_not_exist = 'madeupmodule'
+        self.module_without_main = 'math'
+        self.logger = solver.logger
+
+    def test_import_with_main(self):
+        """Make sure that module with method main is able to be imported and
+        main method can be executed. We use problems.problem_0001 to test
+        that this works, i.e. that no errors are raised.
+        """
+        solver.execute_problem(self.module_with_main)
+
+    def test_import_not_exist(self):
+        """Make sure that if module that doesn't exist is passed, that function
+        catches ImportError and returns None.
+        """
+        answer = solver.execute_problem(self.module_not_exist)
+        self.assertEqual(answer, None)
+
+    def test_import_without_main(self):
+        """Make sure that if module that doesn't have method main is passed,
+        that function catches AttributeError and returns None.
+        """
+        answer = solver.execute_problem(self.module_without_main)
+        self.assertEqual(answer, None)
+
+
 class TestGetModules(unittest.TestCase):
+    """Make sure that solver.get_modules works for current settings. Test
+    for when problems list is passed and when problems list is absent.
+    """
     def setUp(self):
         self.current_settings = solver_settings.GET_MODULES_SETTINGS
 
