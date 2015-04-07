@@ -60,11 +60,46 @@ def get_path_variables():
     return parent_directory, base
 
 
+def find_neighborhood(matrix, row_index, col_index, radius=3):
+    directions = [(1, 0),
+                  (1, 1),
+                  (0, 1),
+                  (-1, 1),
+                  (-1, 0),
+                  (-1, -1),
+                  (0, -1),
+                  (1, -1)]
+
+    origin = np.array((row_index, col_index))
+    rows, cols = matrix.shape
+
+    neighborhood = []
+    for direction in directions:
+        group = [origin]
+        for magnitude in range(1, radius + 1):
+            direction_vector = np.array(scalar_multiply(direction, magnitude))
+            index = origin + direction_vector
+            x_dir, y_dir = index
+            if 0 <= x_dir < rows and 0 <= y_dir < cols:
+                group.append(index)
+        if len(group) == radius + 1:
+            neighborhood.append(group)
+
+    return neighborhood
+
+
+def scalar_multiply(vector, scalar):
+    return tuple([scalar * element for element in vector])
+
+
 def main():
     parent_directory, base = get_path_variables()
 
     path = os.path.join(parent_directory, 'input', base, 'grid.txt')
 
     matrix = get_matrix(path)
+
+    for (row_index, col_index), cell in np.ndenumerate(matrix):
+        neighborhood = find_neighborhood(matrix, row_index, col_index)
 
     return str(matrix)
