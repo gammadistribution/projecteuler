@@ -2,7 +2,7 @@ Project Euler
 -------------
 
 This project aims to chronicle the work used to solve problems found on
-[https://www.projecteuler.net](https://www.projecteuler.net), a website
+[http://www.projecteuler.net](http://www.projecteuler.net), a website
 consisting of "a series of challenging mathematical/computer programming
 problems that will require more than just mathematical insights to solve."
 
