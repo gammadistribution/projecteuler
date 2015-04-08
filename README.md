@@ -9,6 +9,9 @@ problems that will require more than just mathematical insights to solve."
 These problems are solved using the Python programming language and a bit
 of mathematical ingenuity.
 
+If you have any wish to solve these problems on your own, then you should not
+peruse the contents of this package.
+
 Requirements
 ------------
 
