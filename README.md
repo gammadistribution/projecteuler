@@ -37,7 +37,7 @@ solutions to problems 11 and 13, run:
 `python solver.py -p 11 13`
 
 If any of the passed problems are not present in the problems folder, a message
-will be presented stating that the problem cannot be found and it will be
+will be presented stating that the problem cannot be found and they will be
 skipped.
 
 To summarize this information, just pass `-h`, the help flag:
