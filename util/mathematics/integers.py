@@ -33,14 +33,14 @@ def factor(n):
     """
 
     assert n == int(n), "Input is not an integer."
-    assert n > 0, "Input is not a positive integer."
-
-    if n == 1:
-        return [(1, 0)]
+    assert n > 0, "Input is not a positive integer greater than 1."
 
     original = n
     integer = 2
-    factors = []
+
+    if n == 1:
+        yield (1, 0)
+        return
 
     while original > 1:
         power = 0
@@ -49,11 +49,9 @@ def factor(n):
             original /= integer
 
         if n % integer == 0 and power != 0:
-            factors.append((int(integer), int(power)))
+            yield (int(integer), int(power))
 
         integer += 1
-
-    return factors
 
 
 def fib(n):
