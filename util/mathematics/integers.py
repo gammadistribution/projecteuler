@@ -278,6 +278,4 @@ def proper_divisors(n):
         if len(divisors) == number_of_proper_divisors:
             break
 
-    divisors.sort()
-
     return divisors
