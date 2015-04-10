@@ -1,4 +1,6 @@
+import itertools
 import math
+import numpy as np
 
 
 def divisor_function(n):
@@ -8,7 +10,6 @@ def divisor_function(n):
     finding its prime factorization and using the multiplicity of the function
     to find the sum of the powers of each prime factor.
     """
-
     number = 1
 
     for base, power in factor(n):
@@ -246,3 +247,39 @@ def prime_factors(n):
     would return [(2, 2), (3, 1)] and prime_factors(n) would return [2, 3].
     """
     return [prime for prime, power in factor(n)]
+
+
+def proper_divisors(n):
+    """The variable n is a a positive integer.
+
+    Get the prime factorization of the integer. The initial list of divisors is
+    1 in addition to the multiplication of each prime number times itself a
+    number of times equal to its multiplicity. For instance, the initial list
+    of divisors for 48, is [1, 2, 3, 4, 8, 16]. Then from this list, determine
+    all products that are actually divisors of the number. Stop when the number
+    of divisors in the list is equal to the number of proper divisors.
+
+    Returns the list of proper divisors.
+    """
+    assert n > 1, "n must be a positive integer greater than 1."
+
+    divisors = [1]
+
+    for prime, multiplicity in factor(n):
+        for counter in range(1, multiplicity + 1):
+            divisor = prime ** counter
+            if divisor < n:
+                divisors.append(divisor)
+
+    number_of_proper_divisors = divisor_function(n) - 1
+
+    for element in itertools.product(divisors, divisors):
+        product = np.product(element)
+        if n % product == 0 and product not in divisors and product < n:
+            divisors.append(product)
+        if len(divisors) == number_of_proper_divisors:
+            break
+
+    divisors.sort()
+
+    return divisors
