@@ -1,4 +1,4 @@
-import itertools
+import itertools as it
 import math
 import numpy as np
 
@@ -262,8 +262,9 @@ def proper_divisors(n):
     assert n > 1, "n must be a positive integer greater than 1."
 
     divisors = [1]
+    prime_factors = list(factor(n))
 
-    for prime, multiplicity in factor(n):
+    for prime, multiplicity in prime_factors:
         for counter in range(1, multiplicity + 1):
             divisor = prime ** counter
             if divisor < n:
@@ -271,11 +272,14 @@ def proper_divisors(n):
 
     number_of_proper_divisors = divisor_function(n) - 1
 
-    for element in itertools.product(divisors, divisors):
+    # combine all possible products of primes times number of prime factors.
+    for element in it.product(*it.repeat(divisors, len(prime_factors))):
         product = np.product(element)
-        if n % product == 0 and product not in divisors and product < n:
+        if n % product == 0 and product < n and product not in divisors:
             divisors.append(product)
         if len(divisors) == number_of_proper_divisors:
             break
+
+    divisors.sort()
 
     return divisors

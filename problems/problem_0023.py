@@ -18,17 +18,31 @@ this limit.
 Find the sum of all the positive integers which cannot be written as the sum of
 two abundant numbers.
 """
+import itertools
 from util.mathematics import integers
 
 
 def main():
     # Lowest abundant number is 12
     # Every number greater than 28123 can be written as the sum of two abundant
-    # numbers so only need to check up to here.
+    # numbers so only need to check up to 28123.
     LOWERBOUND = 12
     UPPERBOUND = 28123
 
     abundant_numbers = [number for number in range(LOWERBOUND, UPPERBOUND + 1)
                         if sum(integers.proper_divisors(number)) > number]
 
-    return len(abundant_numbers)
+    # Get the cross product of abundant numbers so we can determine every
+    # number less than 28123 that is a sum of two abundant numbers.
+    cross_product = itertools.product(abundant_numbers, abundant_numbers)
+
+    sum_of_abundants = set((sum(tup) for tup in cross_product if
+                            sum(tup) <= UPPERBOUND))
+
+    # Every number less than or equal to UPPERBOUND that is not a part of the
+    # set sum_of_abundants is the set we need.
+    not_sum_of_abundants = set(range(1, UPPERBOUND + 1)) - sum_of_abundants
+
+    answer = sum(not_sum_of_abundants)
+
+    return answer
