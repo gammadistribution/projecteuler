@@ -250,35 +250,28 @@ def prime_factors(n):
 def proper_divisors(n):
     """The variable n is a a positive integer.
 
-    Get the prime factorization of the integer. The initial list of divisors is
-    1 in addition to the multiplication of each prime number times itself a
-    number of times equal to its multiplicity. For instance, the initial list
-    of divisors for 48, is [1, 2, 3, 4, 8, 16]. Then from this list, determine
-    all products that are actually divisors of the number. Stop when the number
-    of divisors in the list is equal to the number of proper divisors.
+    Get the prime factorization of the integer. Using this factorization,
+    get the list of prime_divisors by enumerating each prime times itself a
+    number of times equal to the prime's multiplicity. For instance, the
+    list of prime divisors for 180, is [[1, 2, 4], [1, 3, 9], [1, 5]], since
+    the prime factorization of 180 is (2 ^ 2) * (3 ^ 2) * (5 ^ 1).
+
+    Then from this list, get the cartesian product of these groups of prime
+    enumerations, e.g. for 180, enumerate the cartesian product as so
+    (1, 1, 1), (1, 1, 5), (1, 3, 1), (1, 3, 5), (2, 1, 1),... , (4, 9, 5). Then
+    the list of divisors is the product of the resulting tuples from the
+    cartesian product if the product is less than the passed integer n.
 
     Returns the list of proper divisors.
     """
     assert n > 1, "n must be a positive integer greater than 1."
 
-    divisors = [1]
-    prime_factors = list(factor(n))
+    prime_divisors = [[prime ** i for i in range(mult + 1) if prime ** i < n]
+                      for prime, mult in factor(n)]
 
-    for prime, multiplicity in prime_factors:
-        for counter in range(1, multiplicity + 1):
-            divisor = prime ** counter
-            if divisor < n:
-                divisors.append(divisor)
-
-    number_of_proper_divisors = divisor_function(n) - 1
-
-    # combine all possible products of primes times number of prime factors.
-    for element in it.product(*it.repeat(divisors, len(prime_factors))):
-        product = np.product(element)
-        if n % product == 0 and product < n and product not in divisors:
-            divisors.append(product)
-        if len(divisors) == number_of_proper_divisors:
-            break
+    # Get all possible products of prime divisors cartesian product.
+    divisors = [np.product(element) for element in it.product(*prime_divisors)
+                if np.product(element) < n]
 
     divisors.sort()
 
