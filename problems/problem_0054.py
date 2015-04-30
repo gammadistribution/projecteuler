@@ -248,6 +248,27 @@ class PokerHand(object):
         """
         return self._strength[0]
 
+    def __eq__(self, other):
+        """Two poker hands are equal if the strength of each hand is the same
+        and the value of the high card is the same.
+        """
+        strength_string_1, strength_1, high_card_1 = self._strength
+        strength_string_2, strength_2, high_card_2 = other._strength
+        return strength_1 == strength_2 and high_card_1 == high_card_2
+
+    def __lt__(self, other):
+        """This poker hand is less than other poker hand if the strength value
+        is lower than other strength value. If strengths are the same, this
+        poker hand is less than other poker hand if high_card is lower.
+        """
+        strength_string_1, strength_1, high_card_1 = self._strength
+        strength_string_2, strength_2, high_card_2 = other._strength
+
+        condition_1 = strength_1 < strength_2
+        condition_2 = (strength_1 == strength_2 and high_card_1 < high_card_2)
+
+        return condition_1 or condition_2
+
     def __repr__(self):
         cards = ["'{0.value}{0.suit}'".format(card) for card in self.cards]
         return '[{0}]'.format(', '.join(cards))
