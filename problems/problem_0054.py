@@ -276,3 +276,21 @@ class PokerHand(object):
     def __str__(self):
         cards = [''.join([card.value, card.suit]) for card in self.cards]
         return ' '.join(cards)
+
+
+def separate_hands(rounds, delimiter=' ', number_of_cards=5):
+    """Take a list of lists and split each inner list according to past
+    delimiter. Then separate the split list into two parts,the first
+    number_of_cards elements and every element after the first number_of_cards
+    elements. Append to a list as a tuple the two separated lists with the
+    first element of the tuple, the list with the first number_of_cards
+    elements.
+    """
+    hands = []
+    for cards in rounds:
+        cards = cards.split(delimiter)
+        hand_1 = PokerHand(cards[:number_of_cards])
+        hand_2 = PokerHand(cards[number_of_cards:])
+        hands.append((hand_1, hand_2))
+
+    return hands
