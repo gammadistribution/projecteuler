@@ -33,6 +33,7 @@ How many hands does Player 1 win?
 """
 from collections import Counter
 import functools
+import os
 
 
 @functools.total_ordering
@@ -276,6 +277,27 @@ class PokerHand(object):
     def __str__(self):
         cards = [''.join([card.value, card.suit]) for card in self.cards]
         return ' '.join(cards)
+
+
+def get_hands(path):
+    """Return the contents of the file found at path into a list with the
+    new line character stripped.
+    """
+    with open(path) as f:
+        rounds = [line.strip('\n') for line in f.readlines()]
+
+    return rounds
+
+
+def get_path_variables():
+    """Return the module's parent_directory and module name stripped of
+    extension.
+    """
+    parent_directory = os.path.dirname(os.path.realpath(__file__))
+    directory, filename = os.path.split(__file__)
+    base, extension = os.path.splitext(filename)
+
+    return parent_directory, base
 
 
 def separate_hands(rounds, delimiter=' ', number_of_cards=5):
