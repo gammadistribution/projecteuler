@@ -31,6 +31,7 @@ winner.
 
 How many hands does Player 1 win?
 """
+from collections import Counter
 import functools
 
 
@@ -86,3 +87,41 @@ class PlayingCard(object):
 
     def __str__(self):
         return "{0}{1}".format(self.value, self.suit)
+
+
+@functools.total_ordering
+class PokerHand(object):
+    """Use this class to instantiate a list of tuples to form a grouping of
+    PlayingCards. cards is a string of two characters, value and suit, the
+    card's value and suit.
+    """
+    def __init__(self, cards, number_of_cards=5):
+        self.cards = sorted([PlayingCard(card) for card in cards])
+        self.number_of_cards = number_of_cards
+        msg = 'Passed list cards has different number of elements than {} '
+        msg += ', the variable number_of_cards'
+        assert len(self.cards) == number_of_cards, msg.format(number_of_cards)
+        # If the hand is a straight and A is low card, rearrange list of cards.
+        if self.straight and set(['A', '2']).issubset(self.values.keys()):
+            ace = self.cards.pop()
+            self.cards.insert(0, ace)
+
+    @property
+    def straight(self):
+        """Return True if the values of the PokerHand form a sequential list.
+        Note that value 'A', or ace, can be used both as a high and low card,
+        i.e. 'A' may take the value of 1 or 14 when determining a straight.
+        """
+        # Enumerate all possible straights using numberical mapping of card
+        # values, i.e. [[1, 2, 3, 4, 5], ..., [10, 11, 12, 13, 14]] using
+        # standard deck and hand sizes.
+        possible_straights = [range(i, i + self.number_of_cards)
+                              for i in range(1, 10 + 1)]
+        sequence_high = [card._mapping[card.value] for card in self.cards]
+        # Make aces low and check if sequence is found as well.
+        sequence_low = sorted([card._mapping[card.value] if card.value != 'A'
+                               else 1 for card in self.cards])
+        condition_1 = sequence_high in possible_straights
+        condition_2 = sequence_low in possible_straights
+
+        return condition_1 or condition_2
