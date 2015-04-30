@@ -31,3 +31,21 @@ winner.
 
 How many hands does Player 1 win?
 """
+import functools
+
+
+@functools.total_ordering
+class PlayingCard(object):
+    """Use this class to instantiate an object representing a playing card
+    from a normal 52 card deck of playing cards used in games such as poker.
+    """
+    def __init__(self, card):
+        self.card = card
+        value, suit = card
+        suit = suit.upper()
+
+        assert value in self._mapping.keys(), 'Value of card not valid.'
+        assert suit in ['C', 'D', 'H', 'S'], 'Suit of card not valid.'
+
+        self.value = value
+        self.suit = suit
