@@ -50,6 +50,37 @@ class PlayingCard(object):
         self.value = value
         self.suit = suit
 
+    @property
+    def _mapping(self):
+        """Use this mapping to determine the value of a card. Note that the
+        value 'A', or ace, may also be used as a low card, or 1, when checking
+        for a straight. However, in all other instances it's beneficial to
+        consider it a high card.
+        """
+        mapping = {str(number): number for number in range(2, 10)}
+        mapping.update({'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14})
+
+        return mapping
+
+    def __eq__(self, other):
+        """This PlayingCard is equal to other PlayingCard if this
+        PlayingCard's suit and value are the same as other PlayingCard.
+        Note that in a valid 52 playing card deck, there is only one of each
+        card. Therefore, it is invalid to have two equal PlayingCards when
+        using such a deck as you would in a game such as Poker."""
+        return self.value == other.value and self.suit == other.suit
+
+    def __lt__(self, other):
+        """This PlayingCard is less than other PlayingCard if the
+        value of the card is less than other using mapping defined
+        by property PlayingCard._mapping and also if the character
+        representing suit
+        """
+        tuple_1 = (self._mapping[self.value], self.suit)
+        tuple_2 = (other._mapping[other.value], other.suit)
+
+        return tuple_1 < tuple_2
+
     def __repr__(self):
         return "'{0}{1}'".format(self.value, self.suit)
 
