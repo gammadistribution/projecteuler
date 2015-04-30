@@ -107,6 +107,28 @@ class PokerHand(object):
             self.cards.insert(0, ace)
 
     @property
+    def suits(self):
+        """Return a dictionary containing the count of each suit in the list
+        self.cards.
+        """
+        return Counter([card.suit for card in self.cards])
+
+    @property
+    def values(self):
+        """Return a dictionary containing the count of each card value in the
+        list self.cards.
+        """
+        return Counter([card.value for card in self.cards])
+
+    @property
+    def high_card(self):
+        """The high card of a poker hand is the highest valued card in the
+        hand. As self.cards is sorted according to value, then suit, the last
+        element of the list is the high card of the instance of PokerHand.
+        """
+        return self.cards[-1]
+
+    @property
     def straight(self):
         """Return True if the values of the PokerHand form a sequential list.
         Note that value 'A', or ace, can be used both as a high and low card,
@@ -125,3 +147,25 @@ class PokerHand(object):
         condition_2 = sequence_low in possible_straights
 
         return condition_1 or condition_2
+
+    @property
+    def royal(self):
+        """A poker hand is royal if the values of the cards contain the highest
+        possible values, i.e. T, J, Q, K, A.
+        """
+        return set(self.values.keys()) == set(['T', 'J', 'Q', 'K', 'A'])
+
+    @property
+    def flush(self):
+        """Return True if the value number_of_cards is found in the values
+        of the object's suits dictionary.
+        """
+        return self.number_of_cards in self.suits.values()
+
+    def __repr__(self):
+        cards = ["'{0.value}{0.suit}'".format(card) for card in self.cards]
+        return '[{0}]'.format(', '.join(cards))
+
+    def __str__(self):
+        cards = [''.join([card.value, card.suit]) for card in self.cards]
+        return ' '.join(cards)
