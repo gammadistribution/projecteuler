@@ -49,3 +49,9 @@ class PlayingCard(object):
 
         self.value = value
         self.suit = suit
+
+    def __repr__(self):
+        return "'{0}{1}'".format(self.value, self.suit)
+
+    def __str__(self):
+        return "{0}{1}".format(self.value, self.suit)
