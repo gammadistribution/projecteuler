@@ -162,6 +162,92 @@ class PokerHand(object):
         """
         return self.number_of_cards in self.suits.values()
 
+    def _strength_mapping(self, strength):
+        """Convert the string values of a hand's strength to a numeric value
+        for comparison purposes.
+        """
+        mapping = {
+            'Royal Flush': 9,
+            'Straight Flush': 8,
+            'Four of a Kind': 7,
+            'Full House': 6,
+            'Flush': 5,
+            'Straight': 4,
+            'Three of a Kind': 3,
+            'Two Pairs': 2,
+            'One Pair': 1,
+            'High Card': 0
+            }
+
+        return mapping[strength]
+
+    @property
+    def _strength(self):
+        """The strength of a poker hand is the highest valued combination of
+        cards in the hand. The highest to lowest poker hand strenghs are
+        enumerated below:
+
+        Royal Flush: Ten, Jack, Queen, King, Ace, in same suit.
+        Straight Flush: All cards are consecutive values of same suit.
+        Four of a Kind: Four cards of the same value.
+        Full House: Three of a kind and a pair.
+        Flush: All cards of the same suit.
+        Straight: All cards are consecutive values.
+        Three of a Kind: Three cards of the same value.
+        Two Pairs: Two different pairs.
+        One Pair: Two cards of the same value.
+        High Card: Highest value card.
+
+        Returns the string and numerical value of the hand's strength, as well
+        as the value of the high card of the hand for tie-breaking purposes.
+        """
+        values_set = sorted(self.values.values())
+        high_card = self.high_card
+
+        if self.royal and self.flush:
+            strength = 'Royal Flush'
+        elif self.straight and self.flush:
+            strength = 'Straight Flush'
+        elif [1, 4] == values_set:
+            strength = 'Four of a Kind'
+            high_card = max([card for card in self.cards
+                             if self.values[card.value] == 4])
+        elif [2, 3] == values_set:
+            strength = 'Full House'
+        elif self.flush:
+            strength = 'Flush'
+        elif self.straight:
+            strength = 'Straight'
+        elif [1, 1, 3] == values_set:
+            strength = 'Three of a Kind'
+            high_card = max([card for card in self.cards
+                             if self.values[card.value] == 3])
+        elif [1, 2, 2] == values_set:
+            strength = 'Two Pairs'
+            high_cards = []
+            for key in self.values.keys():
+                if self.values[key] == 2:
+                    high_cards.append(max([card for card in self.cards
+                                           if self.values[card.value] == 2]))
+            high_card = max(high_cards)
+        elif [1, 1, 1, 2] == values_set:
+            strength = 'One Pair'
+            high_card = max([card for card in self.cards
+                             if self.values[card.value] == 2])
+        else:
+            strength = 'High Card'
+
+        return (strength,
+                self._strength_mapping(strength),
+                high_card._mapping[high_card.value])
+
+    @property
+    def strength(self):
+        """Returns the string value of the hand's strength. Uses internal
+        method, self._strength to determine hand's strength.
+        """
+        return self._strength[0]
+
     def __repr__(self):
         cards = ["'{0.value}{0.suit}'".format(card) for card in self.cards]
         return '[{0}]'.format(', '.join(cards))
