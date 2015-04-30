@@ -316,3 +316,17 @@ def separate_hands(rounds, delimiter=' ', number_of_cards=5):
         hands.append((hand_1, hand_2))
 
     return hands
+
+
+def main():
+    parent_directory, base = get_path_variables()
+
+    path = os.path.join(parent_directory, 'input', base, 'poker.txt')
+
+    rounds = separate_hands(get_hands(path))
+
+    wins = [(hand_1, hand_2) for hand_1, hand_2 in rounds if hand_1 > hand_2]
+
+    answer = len(wins)
+
+    return answer
